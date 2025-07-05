@@ -1,0 +1,63 @@
+# === Node / SvelteKit ===
+
+node_modules/
+.build/            # carpeta de build
+.vite/             # cache de Vite
+.svelte-kit/       # carpeta de SvelteKit generada
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos de lock
+package-lock.json
+yarn.lock
+
+# === Go ===
+
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Go build cache
+/bin/
+/pkg/
+
+# Modules
+go.sum
+
+# Editor temporales
+*.swp
+*.swo
+
+# === Docker ===
+
+# Docker logs, imágenes, y otros
+docker-compose.override.yml
+
+# === Sistema operativo ===
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# === Otros ===
+
+# Logs
+*.log
+
+# IDEs
+.vscode/
+.idea/

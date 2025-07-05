@@ -1,0 +1,48 @@
+version: '3.9'
+
+services:
+    frontend:
+        build:
+            context: ./frontend
+        container_name: sveltekit_app
+        ports:
+            - '5173:5173'
+        volumes:
+            - ./frontend:/app
+            - /app/node_modules
+        command: ['npm', 'run', 'dev', '--', '--host']
+        restart: unless-stopped
+
+    backend:
+        build:
+            context: ./backend
+        container_name: go_backend
+        ports:
+            - '8080:8080'
+        volumes:
+            - ./backend:/app
+        environment:
+            - DB_HOST=db
+            - DB_PORT=5432
+            - DB_USER=postgres
+            - DB_PASSWORD=postgres
+            - DB_NAME=todoapp
+        depends_on:
+            - db
+        restart: unless-stopped
+
+    db:
+        image: postgres:16
+        container_name: postgres_db
+        ports:
+            - '5432:5432'
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_DB: todoapp
+        volumes:
+            - db_data:/var/lib/postgresql/data
+        restart: unless-stopped
+
+volumes:
+    db_data:
