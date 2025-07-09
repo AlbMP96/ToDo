@@ -31,6 +31,12 @@ yarn.lock
 # Modules
 go.sum
 
+# Go temp/build output
+/backend/tmp/
+backend/tmp/
+tmp/
+*.tmp
+
 # Editor temporales
 *.swp
 *.swo

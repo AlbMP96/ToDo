@@ -1,59 +1,66 @@
 <script lang="ts">
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcomeFallback from '$lib/images/svelte-welcome.png';
+	import { Status, statusLabels } from '$lib/enums/status';
+	import { todos } from '$lib/stores/todos';
+	import type { Todo } from '$lib/types';
+
+	let newTodo = '';
+	let todoStatus: Status = Status.Pending;
+
+	function addTodo() {
+		if (newTodo.trim() === '') return;
+		todos.update((current: Todo[]) => [
+			...current,
+			{ id: crypto.randomUUID(), text: newTodo.trim(), done: false, status: todoStatus }
+		]);
+		newTodo = '';
+	}
+
+	function toggleTodo(id: string) {
+		todos.update((current: Todo[]) =>
+			current.map((todo) => (todo.id === id ? { ...todo, done: !todo.done } : todo))
+		);
+	}
+
+	function deleteTodo(id: string) {
+		todos.update((current: Todo[]) => current.filter((todo) => todo.id !== id));
+	}
+
+	function handleKeydown(e: KeyboardEvent) {
+		if (e.key === 'Enter') addTodo();
+	}
 </script>
 
-<svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
-</svelte:head>
+<h1>To-Do App</h1>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcomeFallback} alt="Welcome" />
-			</picture>
-		</span>
+<input placeholder="Nueva tarea" bind:value={newTodo} on:keydown={handleKeydown} />
 
-		to your new<br />SvelteKit app
-	</h1>
+<select bind:value={todoStatus}>
+	{#each Object.values(Status) as status}
+		<option value={status}>{statusLabels[status]}</option>
+	{/each}
+</select>
 
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
+<button on:click={addTodo}>Añadir</button>
 
-	<Counter />
-</section>
+<ul>
+	{#each $todos as todo (todo.id)}
+		<li>
+			<input type="checkbox" checked={todo.done} on:change={() => toggleTodo(todo.id)} />
+			<span class:done={todo.done}>
+				{todo.text}
+			</span>
+			<select bind:value={todo.status}>
+				{#each Object.values(Status) as status}
+					<option value={status}>{statusLabels[status]}</option>
+				{/each}
+			</select>
+			<button on:click={() => deleteTodo(todo.id)}>🗑️</button>
+		</li>
+	{/each}
+</ul>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
+	.done {
+		text-decoration: line-through;
 	}
 </style>
