@@ -3,6 +3,8 @@
 	import { Status, statusLabels } from '$lib/enums/status';
 	import ToDoCard from './ToDoCard.svelte';
 	import type { Todo } from '$lib/types';
+	import Icon from '@iconify/svelte';
+	import { Icons } from '$lib/icons';
 
 	export let status: Status;
 
@@ -10,7 +12,16 @@
 </script>
 
 <div class="todo-list">
-	<h2>{statusLabels[status]}</h2>
+	<h2>
+		{#if status === Status.Pending}
+			<Icon icon={Icons.pending} />
+		{:else if status === Status.InProgress}
+			<Icon icon={Icons.inprogress} />
+		{:else if status === Status.Completed}
+			<Icon icon={Icons.completed} />
+		{/if}
+		{statusLabels[status]}
+	</h2>
 
 	<ul>
 		{#each filteredTodos as todo (todo.id)}
@@ -33,7 +44,13 @@
 	}
 
 	h2 {
-		text-align: center;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.3em;
+		height: 1rem;
+		margin-bottom: 20px;
+		width: 100%;
 	}
 
 	.todo-list {

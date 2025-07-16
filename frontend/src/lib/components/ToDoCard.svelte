@@ -3,6 +3,7 @@
 	import type { Todo } from '$lib/types';
 	import { Status, statusLabels } from '$lib/enums/status';
 	import Icon from '@iconify/svelte';
+	import { Icons } from '$lib/icons';
 
 	export let todo: Todo;
 
@@ -32,7 +33,7 @@
 			<option value={status}>{statusLabels[status]}</option>
 		{/each}
 	</select>
-	<button on:click={() => deleteTodo(todo.id)}><Icon icon="fluent:delete-32-light" /></button>
+	<button on:click={() => deleteTodo(todo.id)}><Icon icon={Icons.delete} /></button>
 </li>
 
 <style lang="scss">
