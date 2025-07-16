@@ -1,0 +1,6 @@
+@use 'variables' as *;
+@import 'buttons';
+
+body {
+	font-family: $font-family-primary;
+}

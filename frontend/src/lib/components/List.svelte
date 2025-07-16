@@ -34,13 +34,8 @@
 	.todo-list {
 		border: 1px solid #ccc;
 		border-radius: 5px;
-		width: 20%;
-	}
-
-	@media (max-width: 600px) {
-		.todo-list {
-			width: 100%;
-		}
+		width: auto;
+		flex-grow: 1;
 	}
 
 	h2 {

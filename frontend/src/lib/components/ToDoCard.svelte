@@ -4,6 +4,7 @@
 	import { Status, statusLabels } from '$lib/enums/status';
 	import Icon from '@iconify/svelte';
 	import { Icons } from '$lib/icons';
+	import ButtonSecondary from './buttons/ButtonSecondary.svelte';
 
 	export let todo: Todo;
 
@@ -33,7 +34,9 @@
 			<option value={status}>{statusLabels[status]}</option>
 		{/each}
 	</select>
-	<button on:click={() => deleteTodo(todo.id)}><Icon icon={Icons.delete} /></button>
+	<ButtonSecondary onClick={() => deleteTodo(todo.id)}>
+		<Icon icon={Icons.delete} />
+	</ButtonSecondary>
 </li>
 
 <style lang="scss">
