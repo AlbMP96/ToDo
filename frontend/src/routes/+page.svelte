@@ -46,7 +46,7 @@
 	{/each}
 </div>
 
-<style>
+<style lang="scss">
 	h1 {
 		text-align: center;
 		font-size: 2rem;
