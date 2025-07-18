@@ -21,12 +21,8 @@ services:
             - '8080:8080'
         volumes:
             - ./backend:/app
-        environment:
-            - DB_HOST=db
-            - DB_PORT=5432
-            - DB_USER=postgres
-            - DB_PASSWORD=postgres
-            - DB_NAME=todoapp
+        env_file:
+            - ./backend/.env.backend.${ENVIRONMENT}
         depends_on:
             - db
         restart: unless-stopped
@@ -36,10 +32,8 @@ services:
         container_name: postgres_db
         ports:
             - '5432:5432'
-        environment:
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres
-            POSTGRES_DB: todoapp
+        env_file:
+            - ./database/.env.db.${ENVIRONMENT}
         volumes:
             - db_data:/var/lib/postgresql/data
         restart: unless-stopped
