@@ -32,10 +32,11 @@
 
 <style lang="scss">
 	.todo-list {
-		border: 1px solid #ccc;
 		border-radius: 5px;
 		width: auto;
 		flex-grow: 1;
+		background-color: white;
+		box-shadow: 0 0 10px oklch(70.9% 0.01 56.259);
 	}
 
 	h2 {

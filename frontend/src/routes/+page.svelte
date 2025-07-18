@@ -27,7 +27,7 @@
 	}
 </script>
 
-<div>
+<div class="page">
 	<h1>To-Do App</h1>
 
 	<div class="todo-form">
@@ -56,6 +56,14 @@
 		}
 	}
 
+	.page {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 20px;
+		padding: 20px;
+	}
+
 	h1 {
 		text-align: center;
 		font-size: 2rem;
@@ -74,6 +82,7 @@
 		border-radius: 5px;
 		margin-inline: auto;
 		padding: 10px;
+		background-color: white;
 
 		input {
 			flex-grow: 1;
