@@ -50,6 +50,13 @@ func main() {
 		}
 		handlers.CreateUserHandler(w, r)
 	})
+	mux.HandleFunc(urls.LoginUrl, func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		handlers.LoginHandler(w, r)
+	})
 
 	server := &http.Server{
 		Addr:    ":8080",

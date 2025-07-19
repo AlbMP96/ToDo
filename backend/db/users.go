@@ -27,8 +27,8 @@ func GetUserById(ctx context.Context, id string) (*models.User, error) {
 
 func GetUserByEmail(ctx context.Context, email string) (*models.User, error) {
 	var user models.User
-	query := "SELECT id, name, email, created_at FROM users WHERE email = $1"
-	err := DB.QueryRowContext(ctx, query, email).Scan(&user.ID, &user.Name, &user.Email, &user.CreatedAt)
+	query := "SELECT id, name, email, password, created_at FROM users WHERE email = $1"
+	err := DB.QueryRowContext(ctx, query, email).Scan(&user.ID, &user.Name, &user.Email, &user.Password, &user.CreatedAt)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
