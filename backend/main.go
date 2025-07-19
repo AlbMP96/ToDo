@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	urls "github.com/AlbMP96/backend/config"
 	"github.com/AlbMP96/backend/db"
 	"github.com/AlbMP96/backend/handlers"
 
@@ -30,12 +31,14 @@ func main() {
 
 	db.Connect(psqlInfo)
 
-	http.HandleFunc("/", handler)
-	http.HandleFunc("/api/users/create", handlers.CreateUserHandler)
-	http.HandleFunc("/api/users", handlers.GetUserHandler)
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/", handler)
+	mux.HandleFunc(urls.UsersUrl, handlers.GetUserHandler)
+	mux.HandleFunc(urls.CreateUserUrl, handlers.CreateUserHandler)
 
 	fmt.Println("Escuchando en http://localhost:8080")
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", mux)
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
