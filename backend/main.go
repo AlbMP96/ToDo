@@ -1,12 +1,14 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	urls "github.com/AlbMP96/backend/config"
 	"github.com/AlbMP96/backend/db"
@@ -34,16 +36,47 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/", handler)
-	mux.HandleFunc(urls.UsersUrl, handlers.GetUserHandler)
-	mux.HandleFunc(urls.CreateUserUrl, handlers.CreateUserHandler)
+	mux.HandleFunc(urls.UsersUrl, func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		handlers.GetUserHandler(w, r)
+	})
+	mux.HandleFunc(urls.CreateUserUrl, func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		handlers.CreateUserHandler(w, r)
+	})
 
-	fmt.Println("Escuchando en http://localhost:8080")
-	http.ListenAndServe(":8080", mux)
+	server := &http.Server{
+		Addr:    ":8080",
+		Handler: mux,
+	}
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 
+	go func() {
+		fmt.Println("Escuchando en http://localhost:8080")
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Error al iniciar el servidor: %v", err)
+		}
+	}()
+
 	<-quit
+	log.Println("Cerrando servidor...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatalf("Error al cerrar el servidor: %v", err)
+	}
 	log.Println("Cerrando conexión a la base de datos...")
+
 	db.DB.Close()
+	log.Println("Servidor cerrado correctamente.")
 }

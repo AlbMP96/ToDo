@@ -8,7 +8,6 @@ import (
 	"github.com/AlbMP96/backend/models"
 	"github.com/google/uuid"
 	"github.com/lib/pq"
-	_ "github.com/lib/pq"
 )
 
 func GetUserById(ctx context.Context, id string) (*models.User, error) {
