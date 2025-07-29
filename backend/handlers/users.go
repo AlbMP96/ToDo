@@ -136,11 +136,12 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	isProduction := os.Getenv("ENVIRONMENT") == "production"
 
 	http.SetCookie(w, &http.Cookie{
-		Name:     "token",
+		Name:     "jwt",
 		Value:    token,
+		Path:     "/",
 		HttpOnly: true,
 		Secure:   isProduction,
-		SameSite: http.SameSiteNoneMode,
+		SameSite: http.SameSiteLaxMode,
 		Expires:  time.Now().Add(24 * time.Hour),
 	})
 
@@ -148,5 +149,20 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{
 		"message": "Login successful",
+	})
+}
+
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "jwt",
+		Value:    "",
+		HttpOnly: true,
+		Secure:   os.Getenv("ENVIRONMENT") == "production",
+		SameSite: http.SameSiteNoneMode,
+		Expires:  time.Now().Add(-time.Hour),
+	})
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "Logout successful",
 	})
 }

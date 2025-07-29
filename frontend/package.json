@@ -20,6 +20,7 @@
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"@tailwindcss/vite": "^4.0.0",
+		"@types/jsonwebtoken": "^9.0.10",
 		"eslint": "^9.18.0",
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-plugin-svelte": "^3.0.0",
@@ -36,6 +37,9 @@
 	},
 	"dependencies": {
 		"@iconify/svelte": "^5.0.0",
-		"sass-embedded": "^1.89.2"
+		"dotenv": "^17.2.1",
+		"jose": "^6.0.12",
+		"sass-embedded": "^1.89.2",
+		"svelte-preprocess": "^6.0.3"
 	}
 }

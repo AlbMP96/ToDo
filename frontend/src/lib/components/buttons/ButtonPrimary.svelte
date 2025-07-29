@@ -1,8 +1,9 @@
 <script lang="ts">
 	import Button from './Button.svelte';
-	export let onClick: () => void;
+	export let onClick: () => void = () => {};
+	export let type: 'button' | 'submit' = 'button';
 </script>
 
-<Button className="button-primary" {onClick}>
+<Button className="button-primary" {onClick} {type}>
 	<slot />
 </Button>

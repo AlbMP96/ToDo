@@ -13,6 +13,7 @@ import (
 	urls "github.com/AlbMP96/backend/config"
 	"github.com/AlbMP96/backend/db"
 	"github.com/AlbMP96/backend/handlers"
+	"github.com/rs/cors"
 
 	_ "github.com/lib/pq"
 )
@@ -27,6 +28,7 @@ func main() {
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
 	dbName := os.Getenv("DB_NAME")
+	frontendURL := os.Getenv("FRONTEND_URL")
 
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		dbHost, dbPort, dbUser, dbPassword, dbName)
@@ -57,10 +59,27 @@ func main() {
 		}
 		handlers.LoginHandler(w, r)
 	})
+	mux.HandleFunc(urls.LogoutUrl, func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+			return
+		}
+		handlers.LogoutHandler(w, r)
+	})
+
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{frontendURL},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+		Debug:            true,
+	})
+
+	handler := c.Handler(mux)
 
 	server := &http.Server{
 		Addr:    ":8080",
-		Handler: mux,
+		Handler: handler,
 	}
 
 	quit := make(chan os.Signal, 1)
