@@ -9,7 +9,6 @@ const encoder = new TextEncoder();
 const secret = encoder.encode(secretString);
 
 export async function verifyToken(token: string) {
-	console.log('Secret Key:', secret);
 	try {
 		const { payload } = await jwtVerify(token, secret);
 		return payload;

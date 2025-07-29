@@ -1,4 +1,6 @@
 import { apiRoutes } from '$lib/config/apiRoutes';
+import { redirect } from '@sveltejs/kit';
+import { goto } from '$app/navigation';
 
 export async function login(email: string, password: string) {
 	const response = await fetch(apiRoutes.login, {
@@ -36,12 +38,12 @@ export async function create(email: string, password: string) {
 export async function logout() {
 	const response = await fetch(apiRoutes.logout, {
 		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		}
+		credentials: 'include'
 	});
 
-	if (!response.ok) {
+	if (response.ok) {
+		goto('/login');
+	} else {
 		throw new Error(`Error al cerrar sesión: ${response.statusText}`);
 	}
 

@@ -4,6 +4,10 @@
 	import type { Todo } from '$lib/types';
 	import List from '$lib/components/List.svelte';
 	import ButtonPrimary from '$lib/components/buttons/ButtonPrimary.svelte';
+	import { logout } from '$lib/api/auth';
+	import Icon from '@iconify/svelte';
+	import { Icons } from '$lib/icons';
+	import ButtonSecondary from '$lib/components/buttons/ButtonSecondary.svelte';
 
 	let newTodo = '';
 	let todoStatus: Status = Status.Pending;
@@ -28,6 +32,10 @@
 </script>
 
 <div class="page">
+	<div class="logout-button">
+		<ButtonSecondary onClick={logout}>Cerrar sesión <Icon icon={Icons.logout} /></ButtonSecondary>
+	</div>
+
 	<h1>To-Do App</h1>
 
 	<div class="todo-form">
@@ -54,6 +62,12 @@
 		.status-lists {
 			width: 100%;
 		}
+	}
+
+	.logout-button {
+		position: absolute;
+		top: 10px;
+		right: 10px;
 	}
 
 	.page {

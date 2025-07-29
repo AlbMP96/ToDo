@@ -27,6 +27,8 @@ type LoginResponse struct {
 	Token string `json:"token"`
 }
 
+var isProduction bool = os.Getenv("ENVIRONMENT") == "production"
+
 func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 	var req CreateUserRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -133,8 +135,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	isProduction := os.Getenv("ENVIRONMENT") == "production"
-
 	http.SetCookie(w, &http.Cookie{
 		Name:     "jwt",
 		Value:    token,
@@ -156,9 +156,10 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     "jwt",
 		Value:    "",
+		Path:     "/",
 		HttpOnly: true,
-		Secure:   os.Getenv("ENVIRONMENT") == "production",
-		SameSite: http.SameSiteNoneMode,
+		Secure:   isProduction,
+		SameSite: http.SameSiteLaxMode,
 		Expires:  time.Now().Add(-time.Hour),
 	})
 	w.WriteHeader(http.StatusOK)

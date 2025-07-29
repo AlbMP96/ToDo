@@ -4,6 +4,9 @@ button {
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 5px;
 
 	&.button-primary {
 		background-color: $primary-color;
