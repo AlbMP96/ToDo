@@ -2,10 +2,11 @@
 	import { login } from '$lib/api/auth';
 	import { goto } from '$app/navigation';
 	import ButtonPrimary from '$lib/components/buttons/ButtonPrimary.svelte';
+	import { Icons } from '$lib/icons';
+	import InputComponent from '$lib/components/InputComponent.svelte';
 
 	let email: string = '';
 	let password: string = '';
-	let showPassword: boolean = false;
 
 	async function sendLogin() {
 		try {
@@ -19,25 +20,23 @@
 
 <div class="login-page">
 	<form on:submit|preventDefault={sendLogin}>
-		<label class="email-field" for="email">
-			Email:
-			<input type="email" id="email" bind:value={email} required />
-		</label>
-		<div class="password-field">
-			<label for="password">
-				Password:
-				<input
-					type={showPassword ? 'text' : 'password'}
-					id="password"
-					bind:value={password}
-					required
-				/>
-			</label>
-			<label for="show-pass">
-				Show Password
-				<input type="checkbox" bind:checked={showPassword} name="show-pass" id="show-pass" />
-			</label>
-		</div>
+		<InputComponent
+			type="email"
+			inputId="email"
+			bind:value={email}
+			icon={Icons.user}
+			labelText="Email:"
+			required
+		/>
+
+		<InputComponent
+			type="password"
+			inputId="password"
+			bind:value={password}
+			icon={Icons.key}
+			labelText="Password:"
+			required
+		/>
 		<ButtonPrimary type="submit">Login</ButtonPrimary>
 	</form>
 </div>
@@ -59,24 +58,6 @@
 			padding: 2rem;
 			border-radius: 10px;
 			box-shadow: 0 0 10px oklch(70.9% 0.01 56.259);
-		}
-
-		.email-field,
-		.password-field > label:first-child {
-			display: flex;
-			flex-direction: column;
-		}
-
-		.password-field {
-			display: flex;
-			flex-direction: column;
-			gap: 0.5rem;
-		}
-
-		input {
-			padding: 0.5rem;
-			border: 1px solid #ccc;
-			border-radius: 4px;
 		}
 	}
 </style>

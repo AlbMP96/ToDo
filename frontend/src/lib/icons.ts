@@ -5,5 +5,7 @@ export const Icons = {
 	inprogress: 'mdi-light:play',
 	completed: 'mdi-light:check-circle',
 	delete: 'mdi:trash-outline',
-	logout: 'mdi:logout'
+	logout: 'mdi:logout',
+	key: 'mdi:key-variant',
+	user: 'mdi:user'
 };
