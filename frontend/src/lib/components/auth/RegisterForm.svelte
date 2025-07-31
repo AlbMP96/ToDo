@@ -9,7 +9,7 @@
 	let email: string = '';
 	let password: string = '';
 	const regexEmail: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-	const regexPassword: RegExp = /^[a-zA-Z0-9!@#$%^&*]{8,16}$/;
+	const regexPassword: RegExp = /^[a-zA-Z0-9!@#$%^&*]{8,}$/;
 
 	async function sendRegister() {
 		if (regexEmail.test(email) && regexPassword.test(password)) {

@@ -36,6 +36,16 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if !auth.IsValidEmail(req.Email) {
+		http.Error(w, "Invalid email", http.StatusBadRequest)
+		return
+	}
+
+	if !auth.IsValidPassword(req.Password) {
+		http.Error(w, "Invalid password", http.StatusBadRequest)
+		return
+	}
+
 	hashedPassword, err := auth.HashPassword(req.Password)
 	if err != nil {
 		http.Error(w, "Error hashing password", http.StatusInternalServerError)
