@@ -1,5 +1,4 @@
 import { apiRoutes } from '$lib/config/apiRoutes';
-import { redirect } from '@sveltejs/kit';
 import { goto } from '$app/navigation';
 
 export async function login(email: string, password: string) {

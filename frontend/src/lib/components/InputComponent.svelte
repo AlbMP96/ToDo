@@ -2,7 +2,6 @@
 	import Icon from '@iconify/svelte';
 
 	export let type: string = 'text';
-	export let inputId: string = '';
 	export let labelText: string = '';
 	export let icon: string = '';
 	export let value: string = '';
@@ -11,9 +10,9 @@
 </script>
 
 <div>
-	<label class="input-component" for={inputId}>
+	<label class="input-component">
 		{labelText}
-		<input type={showPassword ? 'text' : type} id={inputId} bind:value {required} />
+		<input type={showPassword ? 'text' : type} bind:value {required} />
 		{#if icon.trim() !== ''}
 			<div class="icon-wrapper">
 				<Icon {icon} width="20" height="20" />
@@ -21,9 +20,9 @@
 		{/if}
 	</label>
 	{#if type === 'password'}
-		<label for="show-pass">
+		<label>
 			Show Password
-			<input type="checkbox" bind:checked={showPassword} name="show-pass" id="show-pass" />
+			<input type="checkbox" bind:checked={showPassword} />
 		</label>
 	{/if}
 </div>

@@ -1,5 +1,3 @@
-import { logout } from './api/auth';
-
 export const Icons = {
 	pending: 'mdi-light:clock',
 	inprogress: 'mdi-light:play',
